@@ -24,3 +24,7 @@ Some intended features:
 `lift clean` - Removes everything from build directory
 
 `lift add raysan5/raylib` - Creates _deps directory in project root and pulls from github & Make the module 
+
+# .lift.conf
+
+User can overwrite default parameters used by `lift init` through creation of `.lift.conf` in one of the ENV paths.
