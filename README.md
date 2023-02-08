@@ -37,7 +37,7 @@ User can overwrite default parameters used by `lift init` through creation of `.
 
 2) Build `python setup.py sdist`
 
-3) Uninstall old version if version number chan `yes | pip uninstall lift`
+3) Uninstall old version if version number changed `yes | pip uninstall lift`
 
 4) Install `pip install dist/lift*.gz`
 
