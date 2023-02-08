@@ -29,7 +29,7 @@ Some intended features:
 
 User can overwrite default parameters used by `lift init` through creation of `.lift.conf` in one of the ENV paths.
 
-# How to build
+# How to build & run
 
 0) Install setuptools `pip install setuptools`
 
