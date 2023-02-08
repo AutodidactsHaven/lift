@@ -28,3 +28,25 @@ Some intended features:
 # .lift.conf
 
 User can overwrite default parameters used by `lift init` through creation of `.lift.conf` in one of the ENV paths.
+
+# How to build
+
+0) Install setuptools `pip install setuptools`
+
+1) Remove old build `rm -r dist`
+
+2) Build `python setup.py sdist`
+
+3) Uninstall old version if version number chan `yes | pip uninstall lift`
+
+4) Install `pip install dist/lift*.gz`
+
+5) Run `lift`
+
+**OR**
+
+0) Install setuptools `pip install setuptools`
+
+1) Run `./build.sh`
+
+2) Run `lift`
