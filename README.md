@@ -11,21 +11,16 @@ Some intended features:
 
 `lift init` - generates `lift_build.py` in the root with default parameters
 
-Generates ./build/debug
-`lift debug build`
-Generates ./build/debug and runs executable
-`lift debug run`
+`lift debug build` - Generates ./build/debug
 
-Generates ./build/release
-`lift release build`
-Generates ./build/release and runs executable
-`lift release run`
+`lift debug run` - Generates ./build/debug and runs executable
 
-Runs unit tests
-`lift test`
+`lift release build` - Generates ./build/release
 
-Removes everything from build directory
-`lift clean`
+`lift release run` - Generates ./build/release and runs executable
 
-Creates _deps directory in project root and pulls from github & Make the module 
-`lift add raysan5/raylib`
+`lift test` - Runs unit tests
+
+`lift clean` - Removes everything from build directory
+
+`lift add raysan5/raylib` - Creates _deps directory in project root and pulls from github & Make the module 
