@@ -21,3 +21,8 @@ class COLOR:
         CYAN = "\033[46m"
         WHITE = "\033[47m"
         RESET = "\033[39;49m"
+
+
+class STYLE:
+    DEFAULT = f"{COLOR.YELLOW}"
+    DEBUG = f"{COLOR.BLUE}"
