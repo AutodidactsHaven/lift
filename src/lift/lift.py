@@ -30,7 +30,7 @@ def main():
         cli_parameter = sys.argv[2]
 
     if cli_action in CLI.actions:
-        if cli_parameter is not None:
+        if cli_parameter:
             if cli_parameter in CLI.parameters or cli_action == CLI.actions.get("add"):
                 print("")
             else:
