@@ -1,4 +1,4 @@
-#include "magic.h"
+#include "player.h"
 
 int main() {
     spell quick_bar_spell_1 = {
