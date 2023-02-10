@@ -9,21 +9,21 @@ Some intended features:
 
 # CLI Commands
 
-`lift init` - generates `lift_build.py` in the root with default parameters
+`lift init` - generates `lift_build.py` in the root folder with the default parameters
 
-`lift debug build` - Generates ./build/debug
+`lift build` - Generates the build in a debug mode
 
-`lift debug run` - Generates ./build/debug and runs executable
+`lift build release/debug` - Generates the build in a spicified mode
 
-`lift release build` - Generates ./build/release
+`lift run` - Generates the build and runs the app in the debug mode
 
-`lift release run` - Generates ./build/release and runs executable
+`lift run release/debug` - Generates the build in a spicified mode and runs the app
 
 `lift test` - Runs unit tests
 
 `lift clean` - Removes everything from build directory
 
-`lift add raysan5/raylib` - Creates _deps directory in project root and pulls from github & Make the module 
+Not implemented `lift add raysan5/raylib` - Creates _deps directory in project root and pulls from github & Make the module 
 
 # .lift.conf
 
