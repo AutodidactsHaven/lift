@@ -22,68 +22,35 @@ def main():
 
 
     # CLI parsing
-    if len(sys.argv) < 2:
+    if len(sys.argv) == 1:
         out.print_help()
         exit()
 
-    lift_build.build("debug")
-
-#    # if no argument is provided then print help
-#    if len(sys.argv) < 2:
-#        out.print_debug("TODO: Help section")
-#        # TODO: lift executed without parameters, print help
-#        exit()
-#
-#    # extract cli_action and cli_parameter from arguments
-#    cli_action = sys.argv[1]
-#    cli_parameter = None
-#    if len(sys.argv) > 2:
-#        cli_parameter = sys.argv[2]
-#
-#    # check if cli_action and cli_parameter are valid
-#    if cli_action in CLI.actions:
-#        if cli_parameter:
-#            if not (cli_parameter in CLI.parameters) or (cli_action == CLI.actions.get("add")):
-#                # TODO: Handle add key, since any name of the lib can follow
-#                out.print_error(
-#                    f"{cli_parameter} is not a valid parameter for {cli_action}")
-#                exit()
-#        # switch case of cli_action and cli_parameter pairs
-#        if cli_action == CLI.init:
-#            out.print_info("init")
-#        elif cli_action == CLI.debug or cli_action == CLI.release:
-#            # something to do with build or build&run
-#            if cli_parameter == CLI.build or cli_parameter == CLI.run:
-#                out.print_info(f"{cli_action} -> {cli_parameter}")
-#                if cli_action == CLI.debug:
-#                    BUILD.build(COMPILER.DEBUG);
-#                else:
-#                    BUILD.build(COMPILER.RELEASE);
-#                if cli_parameter == CLI.run:
-#                    BUILD.run();
-#            else:
-#                out.print_error("Incorect argument")
-#                out.print_info("use: lift debug/release build/run")
-#        elif cli_action == CLI.test:
-#            out.print_info("test")
-#        elif cli_action == CLI.clean:
-#            out.print_info("clean")
-#        elif cli_action == CLI.add:
-#            out.print_info("add")
-#        elif cli_action == CLI.help:
-#            out.print_info("help")
-#    else:
-#        out.print_error(f"{cli_action} is not a valid key")
-#        exit()
-
-    #files = FILES("sample")
-    #out.print_info(files.all_files)
-    #out.print_info(files.get_build())
-    #out.print_info(files.get_files_with_exensions({".h",".c"}));
-
-    #flags = COMPILER(COMPILER.CLANG).generate_flags(COMPILER.DEBUG)
-    #out.print_info(flags)
-
+    first_argument = sys.argv[1]
+    second_argument = None
+    if len(sys.argv) == 3:
+        second_argument = sys.argv[2]
+    if first_argument == "init":
+        out.print_info("> init")
+        # TODO: Init code for creating lift.build.py
+    elif first_argument == "build" or first_argument == "run":
+        # build mode selection
+        if second_argument == "release":
+            out.print_info("> lift_build.py->build(\"release\")")
+            lift_build.build("release")
+        else:
+            out.print_info("> lift_build.py->build(\"debug\")")
+            lift_build.build("debug")
+        # run the app's executable
+        if first_argument == "run":
+            out.print_info("> lift_build.py->run()")
+            lift_build.run()
+    elif first_argument == "test":
+        out.print_info("> lift_build.py->test()")
+        lift_build.test()
+    elif first_argument == "clean":
+        out.print_info("> lift_build.py->clean()")
+        lift_build.clean()
 
 if __name__ == "__main__":
     main()
