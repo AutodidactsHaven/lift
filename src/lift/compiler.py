@@ -26,7 +26,7 @@ class COMPILER:
         "-Wnull-dereference": ALL,
         "-Wcast-qual": ALL,
         "-Wformat-security": ALL,
-        "-stack-protector": ALL,
+        "-Wstack-protector": ALL,
         "-Warray-bounds": ALL,
 
         "-Wcast-align=strict": GCC,
