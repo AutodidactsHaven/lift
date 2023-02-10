@@ -4,6 +4,7 @@ from lift.color import STYLE
 from lift.cli import CLI
 from lift.compiler import COMPILER
 from lift.files import FILES
+from lift.build import BUILD
 import lift.print as out
 
 def main():
@@ -24,24 +25,44 @@ def main():
     # check if cli_action and cli_parameter are valid
     if cli_action in CLI.actions:
         if cli_parameter:
-            if cli_parameter in CLI.parameters or cli_action == CLI.actions.get("add"):
-                print("")
-            else:
+            if not (cli_parameter in CLI.parameters) or (cli_action == CLI.actions.get("add")):
+                # TODO: Handle add key, since any name of the lib can follow
                 out.print_error(
                     f"{cli_parameter} is not a valid parameter for {cli_action}")
                 exit()
+        # switch case of cli_action and cli_parameter pairs
+        if cli_action == CLI.init:
+            out.print_info("init")
+        elif cli_action == CLI.debug or cli_action == CLI.release:
+            # something to do with build or build&run
+            if cli_parameter == CLI.build or cli_parameter == CLI.run:
+                out.print_info(f"{cli_action} -> {cli_parameter}")
+                BUILD.build();
+                if cli_parameter == CLI.run:
+                    BUILD.run();
+            else:
+                out.print_error("Incorect argument")
+                out.print_info("use: lift debug/release build/run")
+        elif cli_action == CLI.test:
+            out.print_info("test")
+        elif cli_action == CLI.clean:
+            out.print_info("clean")
+        elif cli_action == CLI.add:
+            out.print_info("add")
+        elif cli_action == CLI.help:
+            out.print_info("help")
     else:
         out.print_error(f"{cli_action} is not a valid key")
         exit()
 
 
-    files = FILES("sample")
-    out.print_info(files.all_files)
-    out.print_info(files.get_build())
-    out.print_info(files.get_files_with_exensions({".h",".c"}));
+    #files = FILES("sample")
+    #out.print_info(files.all_files)
+    #out.print_info(files.get_build())
+    #out.print_info(files.get_files_with_exensions({".h",".c"}));
 
-    flags = COMPILER(COMPILER.CLANG).generate_flags(COMPILER.DEBUG)
-    out.print_info(flags)
+    #flags = COMPILER(COMPILER.CLANG).generate_flags(COMPILER.DEBUG)
+    #out.print_info(flags)
 
 
 if __name__ == "__main__":
