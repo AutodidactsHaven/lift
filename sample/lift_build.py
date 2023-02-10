@@ -1,1 +1,0 @@
-# Lift build system config script
