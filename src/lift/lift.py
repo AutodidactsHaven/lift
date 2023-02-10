@@ -4,7 +4,7 @@ from lift.color import STYLE
 from lift.cli import CLI
 from lift.compiler import COMPILER
 from lift.files import FILES
-from lift.build import BUILD
+import lift.build as BUILD
 import lift.print as out
 
 def main():
@@ -37,7 +37,10 @@ def main():
             # something to do with build or build&run
             if cli_parameter == CLI.build or cli_parameter == CLI.run:
                 out.print_info(f"{cli_action} -> {cli_parameter}")
-                BUILD.build();
+                if cli_action == CLI.debug:
+                    BUILD.build(COMPILER.DEBUG);
+                else:
+                    BUILD.build(COMPILER.RELEASE);
                 if cli_parameter == CLI.run:
                     BUILD.run();
             else:
@@ -54,7 +57,6 @@ def main():
     else:
         out.print_error(f"{cli_action} is not a valid key")
         exit()
-
 
     #files = FILES("sample")
     #out.print_info(files.all_files)

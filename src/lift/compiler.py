@@ -50,7 +50,7 @@ class COMPILER:
         if compilation_mode == self.DEBUG:
             for flag in self.flags_debug:
                 if self.flags_debug[flag] == self.ALL or self.flags_debug[flag] == self.CURRENT_COMPILER:
-                    flags += f" {flag} "
+                    flags += f" {flag}"
         elif compilation_mode == self.RELEASE:
             for flag in self.flags_release:
                 if self.flags_release[flag] == self.ALL or self.flags_release[flag] == self.CURRENT_COMPILER:
