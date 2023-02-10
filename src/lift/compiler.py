@@ -1,7 +1,7 @@
 import lift.print_color as out
 
 # Flags for GCC / Clang
-class COMPILER:
+class Compiler:
     def __init__(self, which_compiler):
         self.CURRENT_COMPILER = which_compiler
 

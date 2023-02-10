@@ -19,7 +19,7 @@ class Files:
                 file_paths.append(filepath)
         return file_paths
 
-    # use: files.get_files_with_exensions({".h", ".c"}) -> {"src/item1.c", "src/headers/item1.h")
+    # use: files.get_files_with_exensions({".h", ".c"}) -> ["src/item1.c", "src/headers/item1.h"]
     def get_files_with_exensions(self, extensions):
         files = []
         for file in self.all_files:

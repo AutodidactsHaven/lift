@@ -2,7 +2,8 @@
 import os
 import sys
 import lift.print_color as Out
-import lift.files as Files
+from lift.files import Files
+from lift.compiler import Compiler
 
 # Toggle on/off printing of out.print_debug
 Out.TOGGLE_DEBUG = True 
@@ -17,14 +18,21 @@ project_settings = {
     "build_path": project_path + "/build", 
     }
 
-# build mode can be release/debug
+# build mode can be RELEASE/DEBUG 
 def build(mode):
     Out.print_debug("Running build()")
 
+    ### Finding files
     # get all files in path_src
-    path_src_files = Files.Files(project_path)
+    path_src_files = Files(project_settings["path_src"])
+    # exclude files which are not *.h and *.c 
     pach_src_source = path_src_files.get_files_with_exensions({".h",".c"})
     Out.print_debug(pach_src_source)
+
+    ### Compiler setup
+    comp = Compiler(project_settings["compiler"])
+    flags = comp.generate_flags(mode)
+    Out.print_debug(flags)
 
 
 def run():
