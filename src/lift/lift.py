@@ -28,7 +28,7 @@ def main():
 
     first_argument = sys.argv[1]
     second_argument = None
-    if len(sys.argv) == 3:
+    if len(sys.argv) >= 3:
         second_argument = sys.argv[2]
     if first_argument == "init":
         Out.print_info("> init")
