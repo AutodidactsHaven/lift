@@ -19,18 +19,16 @@ class Workers:
         result = subprocess.run([app] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         return result.stdout, result.stderr
 
-    threads = []
     def work(self, app, jobs_list):
+        threads = []
         Out.print_info(f"> - Total {len(jobs_list)} jobs")
         for job in jobs_list:
             t = Thread(target=self.internal_worker_capture, args=(app, job))
-            self.threads.append(t)
+            threads.append(t)
             t.start()
 
-        Out.print_info("> - Waiting on all jobs to be done")
         done = 0
-        for t in self.threads:
+        for t in threads:
             t.join()
             done += 1
-            Out.print_info(f"> - Done {done}/{len(jobs_list)}")
-        Out.print_info("> - All workers are done")
+            Out.print_info(f"> - ↺  {done}/{len(jobs_list)} {int((done / len(jobs_list)) * 100 + 0.5)}%")

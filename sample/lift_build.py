@@ -7,7 +7,7 @@ from lift.compiler import Compiler
 from lift.workers import Workers
 
 # Toggle on/off printing of out.print_debug
-Out.TOGGLE_DEBUG = True 
+Out.TOGGLE_DEBUG = False
 
 project_path = os.getcwd()
 project_settings = {
@@ -23,7 +23,15 @@ project_settings = {
 def build(mode):
     Out.print_debug("Running build()")
 
-    ### Finding files
+    ### Vars
+    which_compiler = project_settings["compiler"].lower()
+    executable_name =  project_settings.get("build_path") + "/" +  project_settings.get("executable_name")
+
+    ### Makind necessary dirs
+    if not os.path.exists(project_settings.get("build_path")):
+        os.mkdir(project_settings.get("build_path"))
+
+    ### Finding source files
     Out.print_info("> Finding source files")
     # get all files in path_src
     path_src_files = Files(project_settings["path_src"])
@@ -39,19 +47,30 @@ def build(mode):
     ### Dependancy graph
     # TODO
     
+
     ### Generating object files
     Out.print_info("> Generating *.o files")
     workers_gen_o = Workers()
-    jobs = ["--version"]
+    o_jobs = []
     for file in path_src_source:
         if not file.endswith(".c"):
             continue
         working_dir = project_settings["working_dir"]
         o_file_name = file.split("/")[-1].replace(".c", ".o")
         o_file = f"{working_dir}/build/{o_file_name}"
-        jobs.append(f"{flags} -c '{file}' -o '{o_file}'")
-    which_compiler = project_settings["compiler"].lower()
-    workers_gen_o.work(which_compiler, jobs)
+        o_jobs.append(f"{flags} -c '{file}' -o '{o_file}'")
+    workers_gen_o.work(which_compiler, o_jobs)
+
+    ### Linking into executable
+    Out.print_info("> Linking *.o files into executable")
+    workers_gen_exe = Workers()
+    o_files_dir = Files(project_settings["build_path"])
+    o_files_list = o_files_dir.get_files_with_exensions({".o"})
+    o_files = ""
+    for file in o_files_list:
+        o_files += f" '{file}' "
+    job = [f"{flags} {o_files} -o '{executable_name}'"]
+    workers_gen_exe.work(which_compiler, job)
 
 
 def run():
