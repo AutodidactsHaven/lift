@@ -1,4 +1,4 @@
-import lift.print_color as out
+import lift.print_color as Out
 
 def build():
-    out.print_error("Default build() is called, lift_build.py not found")
+    Out.print_error("Default build() is called, lift_build.py not found")

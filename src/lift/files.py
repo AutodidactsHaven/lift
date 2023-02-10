@@ -5,7 +5,7 @@ import os
 # lift_print(files.all_files)
 # lift_print(files.get_build())
 # lift_print(files.get_files_with_exensions({".h",".c"}));
-class FILES:
+class Files:
     all_files = []
     def __init__(self, directory):
         if not os.path.exists(directory):

@@ -2,17 +2,17 @@ import os
 import sys
 import importlib.util
 
-import lift.print_color as out
+import lift.print_color as Out
 import lift.lift_build_default as lift_build
 
 def main():
-    out.print_info("- - - lift - - -")
+    Out.print_info("- - - lift - - -")
 
     # Working dir which lift was called from, must contain lift_build.py
     working_dir = os.getcwd()
     lift_build_path = working_dir + "/lift_build.py"
     if not os.path.isfile(lift_build_path):
-        out.print_error("lift_build.py is used")
+        Out.print_error("lift_build.py is used")
         exit()
 
     # Load the module using import_module
@@ -23,7 +23,7 @@ def main():
 
     # CLI parsing
     if len(sys.argv) == 1:
-        out.print_help()
+        Out.print_help()
         exit()
 
     first_argument = sys.argv[1]
@@ -31,25 +31,25 @@ def main():
     if len(sys.argv) == 3:
         second_argument = sys.argv[2]
     if first_argument == "init":
-        out.print_info("> init")
+        Out.print_info("> init")
         # TODO: Init code for creating lift.build.py
     elif first_argument == "build" or first_argument == "run":
         # build mode selection
         if second_argument == "release":
-            out.print_info("> lift_build.py->build(\"release\")")
+            Out.print_info("> lift_build.py->build(\"release\")")
             lift_build.build("release")
         else:
-            out.print_info("> lift_build.py->build(\"debug\")")
+            Out.print_info("> lift_build.py->build(\"debug\")")
             lift_build.build("debug")
         # run the app's executable
         if first_argument == "run":
-            out.print_info("> lift_build.py->run()")
+            Out.print_info("> lift_build.py->run()")
             lift_build.run()
     elif first_argument == "test":
-        out.print_info("> lift_build.py->test()")
+        Out.print_info("> lift_build.py->test()")
         lift_build.test()
     elif first_argument == "clean":
-        out.print_info("> lift_build.py->clean()")
+        Out.print_info("> lift_build.py->clean()")
         lift_build.clean()
 
 if __name__ == "__main__":
