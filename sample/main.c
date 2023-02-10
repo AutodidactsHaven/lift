@@ -1,3 +1,4 @@
+#include "magic.h"
 #include "player.h"
 
 int main() {

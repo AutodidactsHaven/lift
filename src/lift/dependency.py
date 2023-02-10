@@ -1,6 +1,36 @@
 import os
 import re
 
+"""
+Given the example layout in /sample we can create an include graph which looks something like this
+
+  ---------         ---------
+ | magic.c | ----> | magic.h | <--------|
+  ---------         ---------           |
+                        ^            --------
+                        |           | main.c |
+  ----------        ----------       --------
+ | player.c | ---> | player.h | <-------|
+  ----------        ----------
+
+It is a dependency graph such that we can ascertain *which* c files must be recompiled when a particular .h file has been
+modified by traversing the graph.
+
+If a '.c' source file has been modified, then only itself is recompiled
+If a '.h' header file has been modified, the graph must be walked to find all header files that include that header file
+                                         either directly or via another include. any '.c' source files that depend on any
+                                         of those header files must be recompiled
+E.g.
+
+If player.c is modified, only player.o must be recompiled
+If magic.c is modified, only magic.o must be recompiled
+if main.c is modified, only main.o must be recompiled
+If player.h is modified, player.o and main.o must be recompiled 
+Finally, if magic.h is modified, magic.o, player.o, and main.o all must be recompiled.
+This is because player.h #includes magic.h, meaning a change to magic.h will modify the contents of player.h after the preprocessor has run.
+Any source file depending on player.h must therefore also be recompiled.
+"""
+
 class FileNode:
     def __init__(self, absolute_path, filename):
         self.absolute_path = absolute_path
