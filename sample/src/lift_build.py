@@ -21,6 +21,12 @@ project_settings = {
 def build(mode):
     Out.print_debug("Running build()")
 
+    # get all files in path_src
+    path_src_files = Files.Files(project_path)
+    pach_src_source = path_src_files.get_files_with_exensions({".h",".c"})
+    Out.print_debug(pach_src_source)
+
+
 def run():
     Out.print_debug("Running run()")
 

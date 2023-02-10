@@ -3,7 +3,6 @@ import os
 # Use example:
 # files = FILES("sample")
 # lift_print(files.all_files)
-# lift_print(files.get_build())
 # lift_print(files.get_files_with_exensions({".h",".c"}));
 class Files:
     all_files = []
@@ -20,17 +19,11 @@ class Files:
                 file_paths.append(filepath)
         return file_paths
 
-    # use: files.get_build() -> "src/lift_build.py"
-    def get_build(self):
-        for file in self.all_files:
-            if "lift_build.py" in file:
-                return file
-
     # use: files.get_files_with_exensions({".h", ".c"}) -> {"src/item1.c", "src/headers/item1.h")
     def get_files_with_exensions(self, extensions):
         files = []
         for file in self.all_files:
             for extension in extensions:
-                if extension in file:
+                if file.endswith(extension):
                     files.append(file)
         return files
