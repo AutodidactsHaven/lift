@@ -8,6 +8,8 @@ import os
 class FILES:
     all_files = []
     def __init__(self, directory):
+        if not os.path.exists(directory):
+            os.mkdir(directory)
         self.all_files = self.internal_get_all_files(directory)
         
     def internal_get_all_files(self, directory):
