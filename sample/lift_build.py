@@ -55,7 +55,7 @@ def build(mode):
     for file in path_src_source:
         mtime = os.path.getmtime(file)
         if cache.mtime_cache.get(file):
-            if mtime > float():
+            if mtime > float(cache.mtime_cache[file]):
                 Out.print_color(Out.COLOR.BLUE, f'{file} has been modified since last compilation')
         
         cache.add_file(file) # update cache
