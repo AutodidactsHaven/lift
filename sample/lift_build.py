@@ -1,6 +1,7 @@
 # Lift build system config script
 import os
 import sys
+import time
 import lift.print_color as Out
 from lift.files import Files
 from lift.compiler import Compiler
@@ -49,13 +50,16 @@ def build(mode):
     cache = FileModifiedCache()
     cache.load()
     Out.print_debug(cache.mtime_cache)
-    cache.clear() # for WIP testing purposes
+
     for file in path_src_source:
-        cache.add_file(file)
+        mtime = os.path.getmtime(file)
+        if mtime > float(cache.mtime_cache[file]):
+            Out.print_color(Out.COLOR.BLUE, f'{file} has been modified since last compilation')
+        cache.add_file(file) # update cache
     
-    cache.store()
+    cache.store() # at end of compilation we should store back to disk
     
-    ### Dependancy graph
+    ### Dependency graph
     # TODO
 
     ### Generating object files
