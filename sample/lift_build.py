@@ -45,15 +45,18 @@ def build(mode):
     comp = Compiler(project_settings["compiler"])
     flags = comp.generate_flags(mode)
 
-    ### Dependancy graph
-    # TODO
+    ### mtime cache
     cache = FileModifiedCache()
+    cache.load()
+    Out.print_debug(cache.mtime_cache)
+    cache.clear() # for WIP testing purposes
     for file in path_src_source:
         cache.cached_files.append(file)
     
     cache.store()
-
     
+    ### Dependancy graph
+    # TODO
 
     ### Generating object files
     Out.print_info("> Generating *.o files")
