@@ -40,17 +40,21 @@ class FileModifiedCache:
     def load(self):
         cache_dir = helpers.build_dir_path() + ".cache/"
         # load from <project_root>/build/.cache/file_mtimes
-        with open(cache_dir + "file_mtimes", "r") as cache_file:
-            line = cache_file.readline()
-            while line:
-                filepath, mtime = self._parse_line(line)
-                if not (filepath and mtime):
-                    Out.print_error("Error parsing mtime file cache. Try running lift clean")
-                    exit(1)
-
-                self.mtime_cache[filepath] = mtime
-
+        try:
+            with open(cache_dir + "file_mtimes", "r") as cache_file:
                 line = cache_file.readline()
+                while line:
+                    filepath, mtime = self._parse_line(line)
+                    if not (filepath and mtime):
+                        Out.print_error("Error parsing mtime file cache. Try running lift clean")
+                        exit(1)
+
+                    self.mtime_cache[filepath] = mtime
+
+                    line = cache_file.readline()
+        except FileNotFoundError as e:
+            # do nothing. cache is empty
+            pass
 
     def add_file(self, filepath):
         mtime = os.path.getmtime(filepath)
