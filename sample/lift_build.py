@@ -37,7 +37,7 @@ def build(mode):
     # get all files in path_src
     path_src_files = Files(project_settings["path_src"])
     # exclude files which are not *.h and *.c 
-    path_src_source = path_src_files.get_files_with_exensions({".h",".c"})
+    path_src_source = path_src_files.get_files_with_extensions({".h",".c"})
     Out.print_debug(path_src_source)
 
     ### Compiler setup
@@ -75,7 +75,7 @@ def build(mode):
     Out.print_info("> Linking *.o files into executable")
     workers_gen_exe = Workers()
     o_files_dir = Files(project_settings["build_path"])
-    o_files_list = o_files_dir.get_files_with_exensions({".o"})
+    o_files_list = o_files_dir.get_files_with_extensions({".o"})
     o_files = ""
     for file in o_files_list:
         o_files += f" '{file}' "
