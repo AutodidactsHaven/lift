@@ -19,8 +19,10 @@ class FileModifiedCache:
     parse_re = re.compile(r'"(.*)",(.*)')
 
     def __init__(self):
-        self.cached_files = []      # list of src files we're caching mtimes of
         self.mtime_cache = {}       # lookup table of file -> mtime
+
+    def get_cached_files(self):
+        return self.mtime_cache.keys()
 
     """Persist self.cached_files to disk"""
     def store(self):
@@ -30,8 +32,7 @@ class FileModifiedCache:
         pathlib.Path(cache_dir).mkdir(parents=True, exist_ok=True) 
 
         with open(cache_dir + "file_mtimes", "w") as cache_file:
-            for filepath in self.cached_files:
-                file_mtime = os.path.getmtime(filepath)
+            for filepath, file_mtime in self.mtime_cache.items():
                 # save to <project_root>/build/.cache/file_mtimes
                 cache_file.write(f'"{filepath}",{file_mtime}\n')
 
@@ -46,13 +47,15 @@ class FileModifiedCache:
                     Out.print_error("Error parsing mtime file cache. Try running lift clean")
                     exit(1)
 
-                self.cached_files.append(filepath)
                 self.mtime_cache[filepath] = mtime
 
                 line = cache_file.readline()
 
+    def add_file(self, filepath):
+        mtime = os.path.getmtime(filepath)
+        self.mtime_cache[filepath] = mtime
+
     def clear(self):
-        self.cached_files = []
         self.mtime_cache = {}
 
     def _parse_line(self, line):

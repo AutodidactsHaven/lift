@@ -51,7 +51,7 @@ def build(mode):
     Out.print_debug(cache.mtime_cache)
     cache.clear() # for WIP testing purposes
     for file in path_src_source:
-        cache.cached_files.append(file)
+        cache.add_file(file)
     
     cache.store()
     
