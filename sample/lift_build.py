@@ -5,6 +5,7 @@ import lift.print_color as Out
 from lift.files import Files
 from lift.compiler import Compiler
 from lift.workers import Workers
+from lift.incremental import FileModifiedCache
 
 # Toggle on/off printing of out.print_debug
 Out.TOGGLE_DEBUG = False
@@ -46,6 +47,12 @@ def build(mode):
 
     ### Dependancy graph
     # TODO
+    cache = FileModifiedCache()
+    for file in path_src_source:
+        cache.cached_files.append(file)
+    
+    cache.store()
+
     
 
     ### Generating object files

@@ -10,6 +10,8 @@ E.g.
 <filepath>, timestamp
 """
 
+import os
+import pathlib
 import lift.helpers as helpers
 
 class FileModifiedCache:
@@ -17,12 +19,22 @@ class FileModifiedCache:
         self.cached_files = []
 
     """Persist self.cached_files to disk"""
-    def store():
-        lift_build_path = helpers.get_lift_build_path()
-        # for file in self.cached_files
-        #   save to 'lift_build_path/build/.cache/file_mtimes
+    def store(self):
+        cache_dir = os.getcwd() + "/build/.cache/"
 
-    def load():
+        # make directory if not already exists
+        pathlib.Path(cache_dir).mkdir(parents=True, exist_ok=True) 
+
+        f = open(cache_dir + "file_mtimes", "w")
+        for filepath in self.cached_files:
+            file_mtime = os.path.getmtime(filepath)
+            # save to 'lift_build_path/build/.cache/file_mtimes
+            f.write(f'"{filepath}",{file_mtime}\n')
+
+        f.close()
+
+    def load(self):
         # load from 'lift_build_path/build/.cache/file_mtimes
         # for line in ^file
         #   parse line -> push into self.cached_files
+        pass
