@@ -3,7 +3,7 @@ import os
 # Use example:
 # files = FILES("sample")
 # lift_print(files.all_files)
-# lift_print(files.get_files_with_exensions({".h",".c"}));
+# lift_print(files.get_files_with_extensions({".h",".c"}));
 class Files:
     all_files = []
     def __init__(self, directory):
@@ -19,8 +19,8 @@ class Files:
                 file_paths.append(filepath)
         return file_paths
 
-    # use: files.get_files_with_exensions({".h", ".c"}) -> ["src/item1.c", "src/headers/item1.h"]
-    def get_files_with_exensions(self, extensions):
+    # use: files.get_files_with_extensions({".h", ".c"}) -> ["src/item1.c", "src/headers/item1.h"]
+    def get_files_with_extensions(self, extensions):
         files = []
         for file in self.all_files:
             for extension in extensions:
