@@ -11,4 +11,6 @@ def project_root_dir_path():
     pass
 
 def build_dir_path():
-    pass
+    working_dir = os.getcwd()
+    build_dir_path = working_dir + "/build/"
+    return build_dir_path

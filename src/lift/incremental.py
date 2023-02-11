@@ -13,6 +13,7 @@ E.g.
 import os
 import pathlib
 import re
+import lift.helpers as helpers
 import lift.print_color as Out
 
 class FileModifiedCache:
@@ -26,7 +27,7 @@ class FileModifiedCache:
 
     """Persist self.cached_files to disk"""
     def store(self):
-        cache_dir = os.getcwd() + "/build/.cache/"
+        cache_dir = helpers.build_dir_path() + ".cache/"
 
         # make directory if not already exists
         pathlib.Path(cache_dir).mkdir(parents=True, exist_ok=True) 
@@ -37,7 +38,7 @@ class FileModifiedCache:
                 cache_file.write(f'"{filepath}",{file_mtime}\n')
 
     def load(self):
-        cache_dir = os.getcwd() + "/build/.cache/"
+        cache_dir = helpers.build_dir_path() + ".cache/"
         # load from <project_root>/build/.cache/file_mtimes
         with open(cache_dir + "file_mtimes", "r") as cache_file:
             line = cache_file.readline()
