@@ -47,6 +47,7 @@ def build(mode):
     flags = comp.generate_flags(mode)
 
     ### mtime cache
+    Out.print_info("> Resolve incremental compilation")
     cache = FileModifiedCache()
     cache.load()
     Out.print_debug(cache.mtime_cache)
