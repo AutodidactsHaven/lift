@@ -15,7 +15,6 @@ class Incremental:
         pass
 
     def resolve(self, path_src_files, build_dir):
-        Out.print_info("> Resolve incremental compilation")
 
         # exclude files which are not *.h and *.c 
         path_src_source = path_src_files.get_files_with_extensions({".h",".c"})

@@ -50,6 +50,7 @@ def build(mode):
     flags = comp.generate_flags(mode)
 
     ### Incremental compilation
+    Out.print_info("> Resolve incremental compilation")
     inc = Incremental()
     source_files_to_compile = inc.resolve(path_src_files, project_settings["build_path"])
 
