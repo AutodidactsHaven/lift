@@ -10,7 +10,7 @@ def setup(lift):
     lift.dir_root = os.getcwd();
     lift.dir_source = "/src"
     lift.dir_build = "/build"
-    lift.dir_libs = ""
+    lift.dir_lib = ""
     lift.dir_include = ""
     lift.libs = ""
 

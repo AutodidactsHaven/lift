@@ -1,6 +1,7 @@
 import os
 import lift.print_color as Out
 from lift.compiler import Compiler
+from lift.files import Files
 
 class LiftClass:
     # Name of your app
@@ -11,8 +12,10 @@ class LiftClass:
     dir_source = "/src"
     # Build directory (usulaly "/build")
     dir_build = "/build"
+    # Objects directory within build directory (usually "/object") 
+    dir_object = "/object"
     # Directory for additonal libs ("-L" flag)
-    dir_libs = ""
+    dir_lib = ""
     # Directory for additonal includes ("-I" flag)
     dir_include = ""
     # List of libs (Example: "-lraylib -lX11")
@@ -69,13 +72,18 @@ class LiftClass:
 
     def get_source_files(self):
         Out.print_debug("> Running LiftClass.get_source_files()")
-        # TODO: Find files in src
+        files = Files(self.dir_root + self.dir_source)
+        source_files = files.get_files_with_extensions({".c", ".h"})
         # TODO: Scanning files for #includes
         # TODO: Generating dependency graph
         # TODO: Exluding elements in (file_blacklist, dir_blacklist) from files
+        return source_files
 
     def get_object_files(self):
         Out.print_debug("> Running LiftClass.get_object_files()")
+        files = Files(self.dir_root + self.dir_build + self.dir_object)
+        object_files = files.get_files_with_extensions({".o"})
         # TODO: Exluding elements in (file_blacklist, dir_blacklist) from .o files
         # if program was compiled eariles without those filters, these .o files still
         # might exist and become part of the executable.
+        return object_files 
