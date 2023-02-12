@@ -5,6 +5,7 @@ import importlib.util
 import lift.print_color as Out
 import lift.lift_build_default as lift_build
 import lift.helpers as helpers
+import lift.lift_class as LiftClass
 
 def main():
     Out.print_info("- - - lift - - -")
@@ -30,6 +31,12 @@ def main():
     second_argument = None
     if len(sys.argv) >= 3:
         second_argument = sys.argv[2]
+
+    # Passing default LiftClass to users lift_build.py->setup(lift) to conifigure
+    build_LiftClass = LiftClass()
+    Out.print_info("> lift_build.py->setup(\"lift\")")
+    build_LiftClass = lift_build.setup(build_LiftClass)
+
     if first_argument == "init":
         Out.print_info("> init")
         # TODO: Init code for creating lift.build.py
@@ -37,10 +44,10 @@ def main():
         # build mode selection
         if second_argument == "release":
             Out.print_info("> lift_build.py->build(\"RELEASE\")")
-            lift_build.build("RELEASE")
+            lift_build.build("release")
         else:
             Out.print_info("> lift_build.py->build(\"DEBUG\")")
-            lift_build.build("DEBUG")
+            lift_build.build("debug")
         # run the app's executable
         if first_argument == "run":
             Out.print_info("> lift_build.py->run()")

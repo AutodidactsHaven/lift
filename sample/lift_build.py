@@ -1,8 +1,9 @@
 import os
 
 from lift.lift import Lift
+from lift.lift_class import LiftClass
 
-def build(lift):
+def setup(lift):
     # Project settings
     lift.app_name = "app"
     lift.dir_root = os.getcwd();
@@ -13,11 +14,11 @@ def build(lift):
     lift.libs = ""
 
     # Compiler settings
-    lift.compiler = "gcc"
+    lift.compiler = "clang"
     lift.flags_debug = lift.flags_debug_default()
     lift.flags_release = lift.flags_release_default()
 
-    # Incremental compilation settings
+     Incremental compilation settings
     lift.incremental_compilation = True
 
     # Compilation & Linker settings
@@ -26,10 +27,11 @@ def build(lift):
     return lift
 
 
+def build(mode):
+    Out.print_debug("Running build()")
 
 def run():
     Out.print_debug("Running run()")
-
 
 def clean():
     Out.print_debug("Running clean()")
