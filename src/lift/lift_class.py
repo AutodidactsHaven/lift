@@ -19,9 +19,9 @@ class LiftClass:
     libs = ""
 
     # blacklist files
-    files_blacklist = {""}
+    file_blacklist = {""}
     # blacklist dirs
-    dirs_blacklist = {""}
+    dir_blacklist = {""}
 
     # Compiler settings
     compiler = "gcc"
@@ -69,6 +69,13 @@ class LiftClass:
 
     def get_source_files(self):
         Out.print_debug("> Running LiftClass.get_source_files()")
+        # TODO: Find files in src
+        # TODO: Scanning files for #includes
+        # TODO: Generating dependency graph
+        # TODO: Exluding elements in (file_blacklist, dir_blacklist) from files
 
     def get_object_files(self):
         Out.print_debug("> Running LiftClass.get_object_files()")
+        # TODO: Exluding elements in (file_blacklist, dir_blacklist) from .o files
+        # if program was compiled eariles without those filters, these .o files still
+        # might exist and become part of the executable.
