@@ -65,11 +65,19 @@ def build(mode):
     ### Dependency graph
     # TODO
 
+    ### Decide on files to compile
+    # get object files that exist
+    build_files = Files(project_settings["build_path"])
+    object_files = build_files.get_files_with_extensions({".o"})
+    print(object_files)
+
+    source_files_to_compile = path_src_source
+
     ### Generating object files
     Out.print_info("> Generating *.o files")
     workers_gen_o = Workers()
     o_jobs = []
-    for file in path_src_source:
+    for file in source_files_to_compile:
         if not file.endswith(".c"):
             continue
         working_dir = project_settings["working_dir"]
