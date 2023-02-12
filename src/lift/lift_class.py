@@ -1,4 +1,5 @@
-from lift.lift import Lift
+import os
+import lift.print_color as Out
 
 class LiftClass:
     # Name of your app
@@ -28,5 +29,11 @@ class LiftClass:
     threads = 8
 
     def __init__(self):
+        Out.print_debug("LiftClass __init__")
         # default LiftClass constructor
         # TODO: Load preference for gcc/clang from config
+
+    # "release" / "debug"
+    def flags_default(self, mode):
+        comp = Compiler(self.compiler)
+        return comp.generate_flags(mode)

@@ -1,7 +1,7 @@
 import os
 
-from lift.lift import Lift
 from lift.lift_class import LiftClass
+from lift.compiler import
 
 def setup(lift):
     # Project settings
@@ -15,8 +15,8 @@ def setup(lift):
 
     # Compiler settings
     lift.compiler = "clang"
-    lift.flags_debug = lift.flags_debug_default()
-    lift.flags_release = lift.flags_release_default()
+    lift.flags_debug = lift.flags_debug_defualt
+    lift.flags_release = lift.flags_release_default
 
      Incremental compilation settings
     lift.incremental_compilation = True
