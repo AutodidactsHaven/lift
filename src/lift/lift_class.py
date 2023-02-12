@@ -1,7 +1,6 @@
 import os
 import lift.print_color as Out
 from lift.compiler import Compiler
-from lift.build import Build
 
 class LiftClass:
     # Name of your app
@@ -43,8 +42,8 @@ class LiftClass:
 
     def build(self, mode):
         Out.print_debug(f"> Running LiftClass.build({mode})")
-        build = Build()
-        build.build()
+        self.compile(mode)
+        self.link(mode)
 
     def run(self):
         Out.print_debug("> Running LiftClass.run()")
@@ -54,3 +53,9 @@ class LiftClass:
 
     def test(self):
         Out.print_debug("> Running LiftClass.test()")
+
+    def compile(self, mode):
+        Out.print_debug(f"> Running LiftClass.compile({mode})")
+
+    def link(self, mode):
+        Out.print_debug(f"> Running LiftClass.link({mode})")
