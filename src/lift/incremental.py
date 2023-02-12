@@ -17,7 +17,9 @@ class Incremental:
     def resolve(self, path_src_files, build_dir):
 
         # exclude files which are not *.h and *.c 
-        path_src_source = path_src_files.get_files_with_extensions({".h",".c"})
+        header_files = path_src_files.get_files_with_extensions({".h"})
+        source_files = path_src_files.get_files_with_extensions({".c"})
+        path_src_source = header_files + source_files
         Out.print_debug(path_src_source)
 
         cache = FileModifiedCache()
@@ -36,6 +38,12 @@ class Incremental:
         
         ### Dependency graph
         dgraph = DependencyGraph()
+
+        header_file_nodes = [ FileNode(p, os.path.basename(p)) for p in header_files]
+        source_file_nodes = [ FileNode(p, os.path.basename(p)) for p in source_files]
+        dgraph.add_nodes(header_file_nodes)
+        dgraph.add_nodes(source_file_nodes)
+
         incremental_compile_files = set()
 
         # get object files that exist
