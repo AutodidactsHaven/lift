@@ -18,6 +18,11 @@ class LiftClass:
     # List of libs (Example: "-lraylib -lX11")
     libs = ""
 
+    # blacklist files
+    files_blacklist = {""}
+    # blacklist dirs
+    dirs_blacklist = {""}
+
     # Compiler settings
     compiler = "gcc"
     flags_debug = ""
@@ -42,8 +47,10 @@ class LiftClass:
 
     def build(self, mode):
         Out.print_debug(f"> Running LiftClass.build({mode})")
-        self.compile(mode)
-        self.link(mode)
+        source_files = self.get_source_files()
+        self.compile(mode, source_files)
+        object_files = self.get_object_files()
+        self.link(mode, object_files)
 
     def run(self):
         Out.print_debug("> Running LiftClass.run()")
@@ -54,8 +61,14 @@ class LiftClass:
     def test(self):
         Out.print_debug("> Running LiftClass.test()")
 
-    def compile(self, mode):
-        Out.print_debug(f"> Running LiftClass.compile({mode})")
+    def compile(self, mode, source_files):
+        Out.print_debug(f"> Running LiftClass.compile({mode}, {source_files})")
 
-    def link(self, mode):
-        Out.print_debug(f"> Running LiftClass.link({mode})")
+    def link(self, mode, object_files):
+        Out.print_debug(f"> Running LiftClass.link({mode}, {object_files})")
+
+    def get_source_files(self):
+        Out.print_debug("> Running LiftClass.get_source_files()")
+
+    def get_object_files(self):
+        Out.print_debug("> Running LiftClass.get_object_files()")
