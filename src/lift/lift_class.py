@@ -29,7 +29,7 @@ class LiftClass:
     threads = 8
 
     def __init__(self):
-        Out.print_info("> Generating lift_class.py->__init__")
+        Out.print_debug("> Generating lift_class.py->__init__")
         # default LiftClass constructor
         self.flags_debug = self.flags_default("debug")
         self.flags_release = self.flags_default("release")
@@ -41,13 +41,13 @@ class LiftClass:
         return comp.generate_flags(mode)
 
     def build(self, mode):
-        Out.print_debug("Running build()")
+        Out.print_debug(f"> Running LiftClass.build({mode})")
 
     def run(self):
-        Out.print_debug("Running run()")
+        Out.print_debug("> Running LiftClass.run()")
 
     def clean(self):
-        Out.print_debug("Running clean()")
+        Out.print_debug("> Running LiftClass.clean()")
 
     def test(self):
-        Out.print_debug("Running test()")
+        Out.print_debug("> Running LiftClass.test()")

@@ -34,29 +34,29 @@ def main():
 
     # Passing default LiftClass to users lift_build.py->setup(lift) to conifigure
     build_LiftClass = LiftClass()
-    Out.print_info("> lift_build.py->setup(lift)")
+    Out.print_debug("> lift_build.py->setup(lift)")
     build_LiftClass = lift_build_py.setup(build_LiftClass)
 
     if first_argument == "init":
-        Out.print_info("> init")
+        Out.print_debug("> init")
         # TODO: Init code for creating lift.build.py
     elif first_argument == "build" or first_argument == "run":
         # build mode selection
         if second_argument == "release":
-            Out.print_info("> lift_build.py->build(\"release\")")
+            Out.print_debug("> lift_build.py->build(\"release\")")
             lift_build_py.build(build_LiftClass, " release")
         else:
-            Out.print_info("> lift_build.py->build(\"debug\")")
+            Out.print_debug("> lift_build.py->build(\"debug\")")
             lift_build_py.build(build_LiftClass, "debug")
         # run the app's executable
         if first_argument == "run":
-            Out.print_info("> lift_build.py->run()")
+            Out.print_debug("> lift_build.py->run()")
             lift_build_py.run(build_LiftClass)
     elif first_argument == "test":
-        Out.print_info("> lift_build.py->test()")
+        Out.print_debug("> lift_build.py->test()")
         lift_build_py.test(build_LiftClass)
     elif first_argument == "clean":
-        Out.print_info("> lift_build.py->clean()")
+        Out.print_debug("> lift_build.py->clean()")
         lift_build_py.clean(build_LiftClass)
 
 if __name__ == "__main__":

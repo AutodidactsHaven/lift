@@ -4,6 +4,7 @@ from lift.lift_class import LiftClass
 import lift.print_color as Out
 
 def setup(lift):
+    Out.print_debug(". Running lift_build.py->setup(lift)")
     # Project settings
     lift.app_name = "app"
     lift.dir_root = os.getcwd();
@@ -28,19 +29,19 @@ def setup(lift):
 
 
 def build(lift, mode):
-    Out.print_debug("Running build()")
+    Out.print_debug(f". Running lift_build.py->build({mode})")
     lift.build(mode)
 
 def run(lift):
-    Out.print_debug("Running run()")
+    Out.print_debug(". Running lift_build.py->run()")
     lift.run()
 
 def clean(lift):
-    Out.print_debug("Running clean()")
+    Out.print_debug(". Running lift_build.py->clean()")
     lift.clean()
 
 def test(lift):
-    Out.print_debug("Running test()")
+    Out.print_debug(". Running lift_build.py->test()")
     lift.test()
     
 if __name__ == "__main__":
