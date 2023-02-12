@@ -88,10 +88,10 @@ def extract_includes(text):
 if __name__ == "__main__":
     from files import FILES
 
-    header_files = FILES("sample").get_files_with_exensions({".h"})
+    header_files = FILES("sample").get_files_with_extensions({".h"})
     header_file_nodes = [ FileNode(p, os.path.basename(p)) for p in header_files]
 
-    source_files = FILES("sample").get_files_with_exensions({".c"})
+    source_files = FILES("sample").get_files_with_extensions({".c"})
     source_file_nodes = [ FileNode(p, os.path.basename(p)) for p in source_files]
 
     dgraph = DependencyGraph()
