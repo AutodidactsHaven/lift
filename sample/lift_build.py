@@ -27,22 +27,21 @@ def setup(lift):
     return lift
 
 
-def build(mode):
+def build(lift, mode):
     Out.print_debug("Running build()")
+    lift.build(mode)
 
-def run():
+def run(lift):
     Out.print_debug("Running run()")
+    lift.run()
 
-def clean():
+def clean(lift):
     Out.print_debug("Running clean()")
+    lift.clean()
 
-def test():
+def test(lift):
     Out.print_debug("Running test()")
+    lift.test()
     
-
-
-
-
-
 if __name__ == "__main__":
     Out.print_error("This scipt is not designed do be executed with Python itself, its part of the lift build system")
