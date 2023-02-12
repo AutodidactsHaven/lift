@@ -1,10 +1,12 @@
 # Lift build system config script
 import os
 import sys
+import time
 import lift.print_color as Out
 from lift.files import Files
 from lift.compiler import Compiler
 from lift.workers import Workers
+from lift.incremental import FileModifiedCache
 
 # Toggle on/off printing of out.print_debug
 Out.TOGGLE_DEBUG = False
@@ -44,9 +46,24 @@ def build(mode):
     comp = Compiler(project_settings["compiler"])
     flags = comp.generate_flags(mode)
 
-    ### Dependancy graph
-    # TODO
+    ### mtime cache
+    Out.print_info("> Resolve incremental compilation")
+    cache = FileModifiedCache()
+    cache.load()
+    Out.print_debug(cache.mtime_cache)
+
+    for file in path_src_source:
+        mtime = os.path.getmtime(file)
+        if cache.mtime_cache.get(file):
+            if mtime > float(cache.mtime_cache[file]):
+                Out.print_color(Out.COLOR.BLUE, f'{file} has been modified since last compilation')
+        
+        cache.add_file(file) # update cache
     
+    cache.store() # at end of compilation we should store back to disk
+    
+    ### Dependency graph
+    # TODO
 
     ### Generating object files
     Out.print_info("> Generating *.o files")

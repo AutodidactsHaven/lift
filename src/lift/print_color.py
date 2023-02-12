@@ -15,6 +15,9 @@ def print_debug(text):
     if TOGGLE_DEBUG:
         print(f"{STYLE.DEBUG_TAG}DEBUG:{COLOR.RESET} {text}")
 
+def print_color(color, text):
+    print(f"{color}{text}{COLOR.RESET}")
+
 def print_help():
     print_info("> HELP PAGE")
     print_normal("FIXME: HELP PAGE is not implemented yet")

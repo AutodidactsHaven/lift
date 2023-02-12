@@ -4,13 +4,13 @@ import importlib.util
 
 import lift.print_color as Out
 import lift.lift_build_default as lift_build
+import lift.helpers as helpers
 
 def main():
     Out.print_info("- - - lift - - -")
 
     # Working dir which lift was called from, must contain lift_build.py
-    working_dir = os.getcwd()
-    lift_build_path = working_dir + "/lift_build.py"
+    lift_build_path = helpers.get_lift_build_path()
     if not os.path.isfile(lift_build_path):
         Out.print_error("lift_build.py is used")
         exit()
