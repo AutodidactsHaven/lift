@@ -33,6 +33,12 @@ def build(mode):
     if not os.path.exists(project_settings.get("build_path")):
         os.mkdir(project_settings.get("build_path"))
 
+    ### Remove old executable if exist
+    # check if executable exist
+    if os.path.exists(executable_name):
+        # Remove the file
+        os.remove(executable_name)
+
     ### Finding source files
     Out.print_info("> Finding source files")
     # get all files in path_src
@@ -112,6 +118,15 @@ def build(mode):
 
 def run():
     Out.print_debug("Running run()")
+    # The name of the executable
+    executable =  project_settings.get("build_path") + "/" +  project_settings.get("executable_name")
+    # The arguments to pass to the executable
+    args = [""]
+    # Combine the executable name and arguments into a single list
+    exec_args = [executable] + args
+    # Replace the current process with the executable
+    if os.path.exists(executable):
+        os.execvp(executable, exec_args)
 
 def clean():
     Out.print_debug("Running clean()")
