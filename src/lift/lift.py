@@ -5,7 +5,7 @@ import importlib.util
 import lift.print_color as Out
 import lift.lift_build_default as lift_build
 import lift.helpers as helpers
-import lift.lift_class as LiftClass
+from lift.lift_class import LiftClass
 
 def main():
     Out.print_info("- - - lift - - -")
@@ -43,10 +43,10 @@ def main():
     elif first_argument == "build" or first_argument == "run":
         # build mode selection
         if second_argument == "release":
-            Out.print_info("> lift_build.py->build(\"RELEASE\")")
+            Out.print_info("> lift_build.py->build(\"release\")")
             lift_build.build("release")
         else:
-            Out.print_info("> lift_build.py->build(\"DEBUG\")")
+            Out.print_info("> lift_build.py->build(\"debug\")")
             lift_build.build("debug")
         # run the app's executable
         if first_argument == "run":

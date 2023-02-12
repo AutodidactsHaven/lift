@@ -1,5 +1,6 @@
 import os
 import lift.print_color as Out
+from lift.compiler import Compiler
 
 class LiftClass:
     # Name of your app
@@ -19,9 +20,8 @@ class LiftClass:
 
     # Compiler settings
     compiler = "gcc"
-    flags_debug = lift.flags_debug_default()
-    flags_release = lift.flags_release_default()
-
+    flags_debug = ""
+    flags_release = ""
     # Incremental compilation settings
     incremental_compilation = True
 
@@ -31,6 +31,8 @@ class LiftClass:
     def __init__(self):
         Out.print_debug("LiftClass __init__")
         # default LiftClass constructor
+        self.flags_debug = self.flags_default("debug")
+        self.flags_release = self.flags_default("release")
         # TODO: Load preference for gcc/clang from config
 
     # "release" / "debug"
