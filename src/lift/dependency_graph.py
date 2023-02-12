@@ -50,7 +50,6 @@ class DependencyGraph:
             self.name_to_node_map[node.filename] = node
             self.graph[node] = set()
 
-    """if directional is true then node1 DEPENDS ON node2 but not other way around"""
     def add_dependency(self, node1, node2, directional=False):
         self.graph[node1].add(node2)
 

@@ -1,71 +1,61 @@
 """
-Incremental compilation requires the tracking of modified source files.
-When a file has been changed, we can use this to compute what recompilation is required.
+Entrypoint for incremental compilation.
 
-A cache is comprised of a relative path from the root project directory, and a last modified timestamp
-stored in a comma seperated list, with one file per line.
-
-E.g.
-
-<filepath>, timestamp
+Internally it uses FileModifiedCache and DependencyGraph to resolve a source directory
+into a set of .c files that must be compiled into object files
 """
-
 import os
-import pathlib
-import re
-import lift.helpers as helpers
 import lift.print_color as Out
+from lift.file_modified_cache import FileModifiedCache
+from lift.dependency_graph import DependencyGraph
+from lift.files import Files
 
-class FileModifiedCache:
-    parse_re = re.compile(r'"(.*)",(.*)')
-
+class Incremental:
     def __init__(self):
-        self.mtime_cache = {}       # lookup table of file -> mtime
+        pass
 
-    def get_cached_files(self):
-        return self.mtime_cache.keys()
+    def resolve(self, path_src_files, build_dir):
+        Out.print_info("> Resolve incremental compilation")
 
-    """Persist self.cached_files to disk"""
-    def store(self):
-        cache_dir = helpers.build_dir_path() + ".cache/"
+        # exclude files which are not *.h and *.c 
+        path_src_source = path_src_files.get_files_with_extensions({".h",".c"})
+        Out.print_debug(path_src_source)
 
-        # make directory if not already exists
-        pathlib.Path(cache_dir).mkdir(parents=True, exist_ok=True) 
+        cache = FileModifiedCache()
+        cache.load()
+        Out.print_debug(cache.mtime_cache)
 
-        with open(cache_dir + "file_mtimes", "w") as cache_file:
-            for filepath, file_mtime in self.mtime_cache.items():
-                # save to <project_root>/build/.cache/file_mtimes
-                cache_file.write(f'"{filepath}",{file_mtime}\n')
-
-    def load(self):
-        cache_dir = helpers.build_dir_path() + ".cache/"
-        # load from <project_root>/build/.cache/file_mtimes
-        try:
-            with open(cache_dir + "file_mtimes", "r") as cache_file:
-                line = cache_file.readline()
-                while line:
-                    filepath, mtime = self._parse_line(line)
-                    if not (filepath and mtime):
-                        Out.print_error("Error parsing mtime file cache. Try running lift clean")
-                        exit(1)
-
-                    self.mtime_cache[filepath] = mtime
-
-                    line = cache_file.readline()
-        except FileNotFoundError as e:
-            # do nothing. cache is empty
-            pass
-
-    def add_file(self, filepath):
-        mtime = os.path.getmtime(filepath)
-        self.mtime_cache[filepath] = mtime
-
-    def clear(self):
-        self.mtime_cache = {}
-
-    def _parse_line(self, line):
-        match = self.parse_re.search(line)
-        if match:
-            return match.group(1), match.group(2)
+        for file in path_src_source:
+            mtime = os.path.getmtime(file)
+            if cache.mtime_cache.get(file):
+                if mtime > float(cache.mtime_cache[file]):
+                    Out.print_color(Out.COLOR.BLUE, f'{file} has been modified since last compilation')
+            
+            cache.add_file(file) # update cache
         
-        return None, None
+        cache.store() # at end of compilation we should store back to disk
+        
+        ### Dependency graph
+        dgraph = DependencyGraph()
+        incremental_compile_files = set()
+
+        # get object files that exist
+        build_files = Files(build_dir).get_files_with_extensions({".o"})
+        object_files = set([os.path.splitext(os.path.basename(path))[0] for path in build_files])
+
+        c_files = path_src_files.get_files_with_extensions({".c"})
+        # we need to turn them into a dict where { [key]: value } key = 'magic' and value = 'full_path/src/magic.c'
+        # so that we can compare them without their paths or their extension (just the 'magic'), but after the comparison
+        # we want to retain the original full path of the source file to pass to the compiler.
+        # to do this we turn both into dicts, do a comparison on the keys (same as set minus operation)
+        # then use those keys to get back out a set of paths via indexing into the original dict
+        c_files_name_to_path_map = {os.path.splitext(os.path.basename(path))[0]: path for path in c_files}
+        o_files_name_to_path_map = {os.path.splitext(os.path.basename(path))[0]: path for path in object_files}
+        #files *without* a .o is the set of .c files minus the set of .o files
+        difference = c_files_name_to_path_map.keys() - o_files_name_to_path_map.keys()
+        uncompiled_source_files = {c_files_name_to_path_map[key] for key in difference}
+
+        # Files to compile are set of incremental compilation targets, I,  and uncompiled source files, S (I union S)
+        source_files_to_compile = uncompiled_source_files | incremental_compile_files
+        
+        return source_files_to_compile
