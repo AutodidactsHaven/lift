@@ -65,12 +65,24 @@ def build(mode):
     ### Dependency graph
     # TODO
 
-    ### Decide on files to compile
     # get object files that exist
-    build_files = Files(project_settings["build_path"])
-    object_files = build_files.get_files_with_extensions({".o"})
-    print(object_files)
+    build_files = Files(project_settings["build_path"]).get_files_with_extensions({".o"})
+    object_files = set([os.path.splitext(os.path.basename(path))[0] for path in build_files])
 
+    c_files = path_src_files.get_files_with_extensions({".c"})
+    # we need to turn them into a dict where { [key]: value } key = 'magic' and value = 'full_path/src/magic.c'
+    # so that we can compare them without their paths or their extension (just the 'magic'), but after the comparison
+    # we want to retain the original full path of the source file to pass to the compiler.
+    # to do this we turn both into dicts, do a comparison on the keys (same as set minus operation)
+    # then use those keys to get back out a set of paths via indexing into the original dict
+    c_files_name_to_path_map = {os.path.splitext(os.path.basename(path))[0]: path for path in c_files}
+    o_files_name_to_path_map = {os.path.splitext(os.path.basename(path))[0]: path for path in object_files}
+    #files *without* a .o is the set of .c files minus the set of .o files
+    difference = c_files_name_to_path_map.keys() - o_files_name_to_path_map.keys()
+    uncompiled_source_files = {c_files_name_to_path_map[key] for key in difference}
+    print(uncompiled_source_files)
+
+    # Files to compile are set of incremental compilation targets and uncompiled source files
     source_files_to_compile = path_src_source
 
     ### Generating object files
