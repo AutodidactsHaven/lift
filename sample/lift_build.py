@@ -105,7 +105,8 @@ def run():
     # Combine the executable name and arguments into a single list
     exec_args = [executable] + args
     # Replace the current process with the executable
-    os.execvp(executable, exec_args)
+    if os.path.exists(executable):
+        os.execvp(executable, exec_args)
 
 def clean():
     Out.print_debug("Running clean()")
