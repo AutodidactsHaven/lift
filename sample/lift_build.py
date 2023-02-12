@@ -70,6 +70,7 @@ def build(mode):
     
     ### Dependency graph
     # TODO
+    incremental_compile_files = set()
 
     # get object files that exist
     build_files = Files(project_settings["build_path"]).get_files_with_extensions({".o"})
@@ -86,10 +87,9 @@ def build(mode):
     #files *without* a .o is the set of .c files minus the set of .o files
     difference = c_files_name_to_path_map.keys() - o_files_name_to_path_map.keys()
     uncompiled_source_files = {c_files_name_to_path_map[key] for key in difference}
-    print(uncompiled_source_files)
 
-    # Files to compile are set of incremental compilation targets and uncompiled source files
-    source_files_to_compile = path_src_source
+    # Files to compile are set of incremental compilation targets, I,  and uncompiled source files, S (I union S)
+    source_files_to_compile = uncompiled_source_files | incremental_compile_files
 
     ### Generating object files
     Out.print_info("> Generating *.o files")
