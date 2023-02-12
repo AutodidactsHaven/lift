@@ -3,7 +3,6 @@ import sys
 import importlib.util
 
 import lift.print_color as Out
-import lift.lift_build_default as lift_build
 import lift.helpers as helpers
 from lift.lift_class import LiftClass
 
@@ -44,7 +43,7 @@ def main():
         # build mode selection
         if second_argument == "release":
             Out.print_debug("> lift_build.py->build(\"release\")")
-            lift_build_py.build(build_LiftClass, " release")
+            lift_build_py.build(build_LiftClass, "release")
         else:
             Out.print_debug("> lift_build.py->build(\"debug\")")
             lift_build_py.build(build_LiftClass, "debug")
