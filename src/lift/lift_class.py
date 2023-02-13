@@ -1,4 +1,5 @@
 import os
+import shutil
 import lift.print_color as Out
 from lift.compiler import Compiler
 from lift.files import Files
@@ -72,6 +73,18 @@ class LiftClass:
 
     def clean(self):
         Out.print_debug("> Running LiftClass.clean()")
+        path = self.dir_root + self.dir_build
+        if os.path.exists(path):
+            # Display the path and ask for confirmation
+            response = input(f"{Out.COLOR.RED}> Delete the folder at {Out.COLOR.BLUE}{path}{Out.COLOR.RESET}? (y/n) ")
+            if response.lower() == "y":
+                # Remove the folder and everything inside it
+                shutil.rmtree(path)
+                Out.print_info(f"> Deleted folder at {path}")
+            else:
+                Out.print_info(f"> Cancelled deletion of folder at {path}")
+        else:
+            Out.print_info(f"> Folder at {path} does not exist")
 
     def test(self):
         Out.print_debug("> Running LiftClass.test()")
