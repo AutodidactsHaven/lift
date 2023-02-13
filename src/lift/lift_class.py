@@ -57,6 +57,8 @@ class LiftClass:
         source_files = self.get_source_files()
         files_to_compile = self.get_files_filter(source_files, ".c"); # FIXME: Temporary until Omni is done
         self.compile(mode, files_to_compile)
+        # remove old app executable
+        self.remove_app()
         # link object files 
         objects_to_link = self.get_object_files()
         self.link(mode, objects_to_link)
@@ -112,7 +114,7 @@ class LiftClass:
     def get_object_files(self):
         # TODO: Exluding elements in (file_blacklist, dir_blacklist) from .o files
         # if program was compiled eariles without those filters, these .o files still
-        # might exist and become part of the executable.
+        # might exist and become part of the executable by accident.
         Out.print_debug("> Running LiftClass.get_object_files()")
         files = Files(self.dir_root + self.dir_build + self.dir_object)
         object_files = files.get_files_with_extensions({".o"})
@@ -135,3 +137,7 @@ class LiftClass:
         if not os.path.exists(directory):
             os.mkdir(directory)
 
+    def remove_app(self):
+        app_name = self.dir_root + self.dir_build + "/" + self.app_name
+        if os.path.exists(app_name):
+            os.remove(app_name)
