@@ -4,7 +4,7 @@ import os
 from lift.lift_class import LiftClass
 import lift.print_color as Out
 
-TOGGLE_DEBUG = True
+Out.TOGGLE_DEBUG = True
 
 def setup(lift):
     Out.print_debug(". Running lift_build.py->setup(lift)")
