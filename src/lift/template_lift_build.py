@@ -1,4 +1,4 @@
-
+template = """
 import os
 
 from lift.lift_class import LiftClass
@@ -50,3 +50,4 @@ def test(lift):
     
 if __name__ == "__main__":
     Out.print_error("This scipt is not designed do be executed with Python itself, its part of the lift build system")
+"""

@@ -5,9 +5,29 @@ import importlib.util
 import lift.print_color as Out
 import lift.helpers as helpers
 from lift.lift_class import LiftClass
+import lift.template_lift_build as Template
 
 def main():
     Out.print_info("- - - lift - - -")
+
+    # CLI parsing
+    if len(sys.argv) == 1:
+        Out.print_help()
+        exit()
+
+    first_argument = sys.argv[1]
+    second_argument = None
+    if len(sys.argv) >= 3:
+        second_argument = sys.argv[2]
+
+    if first_argument == "init":
+        Out.print_debug("> init")
+        if not os.path.exists(os.getcwd() + "/lift_build.py"):
+            with open(os.getcwd() + "/lift_build.py", "w") as file:
+                file.write(Template.template)
+                Out.print_info("> lift_build.py is created form a template")
+        else:
+            Out.print_error("> lift_build.py already exist")
 
     # Working dir which lift was called from, must contain lift_build.py
     lift_build_path = helpers.get_lift_build_path()
@@ -20,26 +40,13 @@ def main():
     lift_build_py = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(lift_build_py)
 
-
-    # CLI parsing
-    if len(sys.argv) == 1:
-        Out.print_help()
-        exit()
-
-    first_argument = sys.argv[1]
-    second_argument = None
-    if len(sys.argv) >= 3:
-        second_argument = sys.argv[2]
-
     # Passing default LiftClass to users lift_build.py->setup(lift) to conifigure
     build_LiftClass = LiftClass()
     Out.print_debug("> lift_build.py->setup(lift)")
     build_LiftClass = lift_build_py.setup(build_LiftClass)
 
-    if first_argument == "init":
-        Out.print_debug("> init")
-        # TODO: Init code for creating lift.build.py
-    elif first_argument == "build" or first_argument == "run":
+
+    if first_argument == "build" or first_argument == "run":
         # build mode selection
         if second_argument == "release":
             Out.print_debug("> lift_build.py->build(\"release\")")
