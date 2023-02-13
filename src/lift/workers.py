@@ -12,7 +12,7 @@ class Workers:
         if output:
             Out.print_normal(output)
         if error:
-            Out.print_error(error)
+            Out.print_normal(error)
 
     def internal_worker_exe(self, app, args_str):
         args = shlex.split(args_str)
