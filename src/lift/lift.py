@@ -12,7 +12,7 @@ def main():
     # Working dir which lift was called from, must contain lift_build.py
     lift_build_path = helpers.get_lift_build_path()
     if not os.path.isfile(lift_build_path):
-        Out.print_error("lift_build.py is used")
+        Out.print_error("lift_build.py is not found")
         exit()
 
     # Load the module using import_module

@@ -63,8 +63,12 @@ class LiftClass:
         objects_to_link = self.get_object_files()
         self.link(mode, objects_to_link)
 
-    def run(self):
+    def run(self, args):
         Out.print_debug("> Running LiftClass.run()")
+        app_name = self.dir_root + self.dir_build + "/" + self.app_name
+        exec_args = [executable] + args
+        # Replace the current process with the executable
+        os.execvp(executable, exec_args)
 
     def clean(self):
         Out.print_debug("> Running LiftClass.clean()")

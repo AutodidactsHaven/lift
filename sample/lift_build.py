@@ -34,7 +34,8 @@ def build(lift, mode):
 
 def run(lift):
     Out.print_debug(". Running lift_build.py->run()")
-    lift.run()
+    args = [""]
+    lift.run(args)
 
 def clean(lift):
     Out.print_debug(". Running lift_build.py->clean()")
