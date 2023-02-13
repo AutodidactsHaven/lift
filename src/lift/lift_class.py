@@ -66,9 +66,9 @@ class LiftClass:
     def run(self, args):
         Out.print_debug("> Running LiftClass.run()")
         app_name = self.dir_root + self.dir_build + "/" + self.app_name
-        exec_args = [executable] + args
+        exec_args = [app_name] + args
         # Replace the current process with the executable
-        os.execvp(executable, exec_args)
+        os.execvp(app_name, exec_args)
 
     def clean(self):
         Out.print_debug("> Running LiftClass.clean()")
