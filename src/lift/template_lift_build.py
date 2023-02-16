@@ -28,6 +28,10 @@ def setup(lift):
     # Compilation & Linker settings
     lift.threads = 8
     
+    # Compiler formatting
+    lift.str_format_compiler = "{FLAGS} -c '{C_FILE}' -o '{O_FILE}'"
+    lift.str_format_linker = "{DIR_LIB} {LIBS} {DIR_INCLUDE} {FLAGS} {OBJECTS} -o '{APP_NAME}'"
+
     return lift
 
 

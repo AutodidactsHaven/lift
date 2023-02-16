@@ -38,6 +38,11 @@ class LiftClass:
     # Compilation & Linker settings
     threads = 8
 
+    # Compiler formatting
+    str_format_compiler = "{FLAGS} -c '{C_FILE}' -o '{O_FILE}'"
+    str_format_linker = "{DIR_LIB} {LIBS} {DIR_INCLUDE} {FLAGS} {OBJECTS} -o '{APP_NAME}'"
+
+
     def __init__(self):
         Out.print_debug("> Generating lift_class.py->__init__")
         # default LiftClass constructor
@@ -97,8 +102,12 @@ class LiftClass:
         commands = []
         for file in source_files:
             o_file = self.dir_root + self.dir_build + self.dir_object + "/" + file.split("/")[-1].replace(".c", ".o")
-            command = f"{self.get_flags(mode)} -c '{file}' -o '{o_file}'"
-            commands.append(command);
+            command = self.str_format_compiler
+            command = command.replace("{FLAGS}", self.get_flags(mode))
+            command = command.replace("{C_FILE}", file)
+            command = command.replace("{O_FILE}", o_file)
+            commands.append(command)
+            Out.print_debug(command)
         # spawn workers 
         worker_manager = Workers()
         worker_manager.work(self.compiler, commands, self.threads)
@@ -114,7 +123,14 @@ class LiftClass:
             objects += f" '{file}' "
         # generate compiler command
         app_name = self.dir_root + self.dir_build + "/" + self.app_name
-        command = f"{self.dir_lib} {self.libs} {self.dir_include} {self.get_flags(mode)} {objects}  -o '{app_name}'"
+        command = self.str_format_linker
+        command = command.replace("{DIR_LIB}", self.dir_lib)
+        command = command.replace("{LIBS}", self.libs)
+        command = command.replace("{DIR_INCLUDE}", self.dir_include)
+        command = command.replace("{FLAGS}", self.get_flags(mode))
+        command = command.replace("{OBJECTS}", objects)
+        command = command.replace("{APP_NAME}", app_name)
+        Out.print_debug(command)
         # spawn workers 
         worker_manager = Workers()
         worker_manager.work(self.compiler, [command], self.threads)
