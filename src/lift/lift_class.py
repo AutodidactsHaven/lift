@@ -139,6 +139,12 @@ class LiftClass:
         # TODO: Scanning files for #includes
         # TODO: Generating dependency graph
         # TODO: Exluding elements in (file_blacklist, dir_blacklist) from files
+
+        ### Incremental compilation
+        Out.print_info("> Resolve incremental compilation")
+        inc = Incremental()
+        source_files_to_compile = inc.resolve(path_src_files, project_settings["build_path"])
+
         Out.print_debug("> Running LiftClass.get_source_files()")
         files = Files(self.dir_root + self.dir_source)
         source_files = files.get_files_with_extensions({".c", ".h"})
