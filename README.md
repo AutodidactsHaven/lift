@@ -1,4 +1,5 @@
-# lift
+
+# <img src="https://media.discordapp.net/attachments/1072835012560420944/1072835013046964224/image.png" width="48"> lift
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
 Some intended features:
