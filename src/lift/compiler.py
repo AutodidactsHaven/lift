@@ -1,17 +1,17 @@
-import lift.print_color as out
+import lift.print_color as Out
 
 # Flags for GCC / Clang
 class Compiler:
     def __init__(self, which_compiler):
         self.CURRENT_COMPILER = which_compiler
 
-    GCC = "GCC"
-    CLANG = "CLANG"
-    ALL = "ALL"
+    GCC = "gcc"
+    CLANG = "clang"
+    ALL = "all"
     GCC_COLORS="export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'"
-    RELEASE = "RELEASE"
-    DEBUG = "DEBUG"
-    HARDENED = "HARDENED"
+    RELEASE = "release"
+    DEBUG = "debug"
+    HARDENED = "hardened"
 
     CURRENT_COMPILER = CLANG
 
@@ -60,7 +60,5 @@ class Compiler:
                 if self.flags_hardened[flag] == self.ALL or self.flags_hardened[flag] == self.CURRENT_COMPILER:
                     flags += f" {flag}"
         else:
-            out.print_error(f"{compilation_mode} is not a valid compilation mode")
+            Out.print_error(f"{compilation_mode} is not a valid compilation mode")
         return flags;
-
-

@@ -1,10 +1,10 @@
-
+template = """
 import os
 
 from lift.lift_class import LiftClass
 import lift.print_color as Out
 
-Out.TOGGLE_DEBUG = True
+TOGGLE_DEBUG = True
 
 def setup(lift):
     Out.print_debug(". Running lift_build.py->setup(lift)")
@@ -27,11 +27,11 @@ def setup(lift):
 
     # Compilation & Linker settings
     lift.threads = 8
-
+    
     # Compiler formatting
     lift.str_format_compiler = "{FLAGS} -c '{C_FILE}' -o '{O_FILE}'"
     lift.str_format_linker = "{DIR_LIB} {LIBS} {DIR_INCLUDE} {FLAGS} {OBJECTS} -o '{APP_NAME}'"
-    
+
     return lift
 
 
@@ -54,3 +54,4 @@ def test(lift):
     
 if __name__ == "__main__":
     Out.print_error("This scipt is not designed do be executed with Python itself, its part of the lift build system")
+"""
