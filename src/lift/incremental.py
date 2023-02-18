@@ -5,6 +5,7 @@ Internally it uses FileModifiedCache and DependencyGraph to resolve a source dir
 into a set of .c files that must be compiled into object files
 """
 import os
+import re
 import lift.print_color as Out
 from lift.file_modified_cache import FileModifiedCache
 from lift.dependency_graph import DependencyGraph, FileNode
@@ -19,38 +20,67 @@ class Incremental:
         # exclude files which are not *.h and *.c 
         header_files = path_src_files.get_files_with_extensions({".h"})
         source_files = path_src_files.get_files_with_extensions({".c"})
-        path_src_source = header_files + source_files
-        Out.print_debug(path_src_source)
+        path_src_files = header_files + source_files
+        Out.print_debug(path_src_files)
 
         cache = FileModifiedCache()
         cache.load()
         Out.print_debug(cache.mtime_cache)
-
-        for file in path_src_source:
+        modified_files = []
+        for file in path_src_files:
             mtime = os.path.getmtime(file)
             if cache.mtime_cache.get(file):
                 if mtime > float(cache.mtime_cache[file]):
                     Out.print_color(Out.COLOR.BLUE, f'{file} has been modified since last compilation')
-            
+                    modified_files.append(file)
+
             cache.add_file(file) # update cache
         
         cache.store() # at end of compilation we should store back to disk
         
-        ### Dependency graph
+        ### Build Dependency graph
         dgraph = DependencyGraph()
+        file_nodes = [ FileNode(p, os.path.basename(p)) for p in path_src_files]
+        dgraph.add_nodes(file_nodes)
 
-        header_file_nodes = [ FileNode(p, os.path.basename(p)) for p in header_files]
-        source_file_nodes = [ FileNode(p, os.path.basename(p)) for p in source_files]
-        dgraph.add_nodes(header_file_nodes)
-        dgraph.add_nodes(source_file_nodes)
+        for file in file_nodes:
+            # parse file for includes
+            f = open(file.absolute_path, "r")
+            file_contents = f.read()
+            includes = extract_includes(file_contents)
+            for include in includes:
+                # print(f'{file} depends on {include}')
+                target_node = dgraph.get_node_by_filename(include)
+                if target_node:
+                    dgraph.add_dependency(file, target_node, directional=True)
+                else:
+                    print("couldnt find %s", target_node)
+
+        print(dgraph)
 
         incremental_compile_files = set()
+
+        for file in modified_files:
+            if file.endswith('.c'):
+                incremental_compile_files.add(file)
+            else: # header file
+                start_node = dgraph.get_node_by_absolute_path(file)
+                if start_node:
+                    deps = dgraph.accumulate_dependencies(start_node)
+                    for dep in deps:
+                        incremental_compile_files.add(dep)
+                else:
+                    #TODO (Josh) how to handle error here?
+                    pass
+
+        print("Files to compile: ")
+        print(incremental_compile_files)
 
         # get object files that exist
         build_files = Files(build_dir).get_files_with_extensions({".o"})
         object_files = set([os.path.splitext(os.path.basename(path))[0] for path in build_files])
 
-        c_files = path_src_files.get_files_with_extensions({".c"})
+        c_files = source_files
         # we need to turn them into a dict where { [key]: value } key = 'magic' and value = 'full_path/src/magic.c'
         # so that we can compare them without their paths or their extension (just the 'magic'), but after the comparison
         # we want to retain the original full path of the source file to pass to the compiler.
@@ -66,3 +96,13 @@ class Incremental:
         source_files_to_compile = uncompiled_source_files | incremental_compile_files
         
         return source_files_to_compile
+
+def extract_includes(text):
+    # the regular expression pattern to match "#include"
+    pattern = re.compile(r'#include\s+[<"](.*?)[>"]')
+
+    # find all matches in the input text
+    matches = re.findall(pattern, text)
+
+    # return the list of matches
+    return matches
