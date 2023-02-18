@@ -24,11 +24,11 @@ Some intended features:
 
 `lift clean` - Removes everything from build directory
 
-Not implemented `lift add raysan5/raylib` - Creates _deps directory in project root and pulls from github & Make the module 
+`Not implemented` - `lift add raysan5/raylib` - Creates _deps directory in project root and pulls from github & Make the module 
 
 # .lift.conf
 
-User can overwrite default parameters used by `lift init` through creation of `.lift.conf` in one of the ENV paths.
+`Not implemented` - User can overwrite default parameters used by `lift init` through creation of `.lift.conf` in one of the ENV paths.
 
 # How to build & run
 
