@@ -1,4 +1,6 @@
-# lift
+
+# <img src="https://media.discordapp.net/attachments/1072835012560420944/1072835013046964224/image.png" width="48"> lift
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
 Some intended features:
 
@@ -23,11 +25,11 @@ Some intended features:
 
 `lift clean` - Removes everything from build directory
 
-Not implemented `lift add raysan5/raylib` - Creates _deps directory in project root and pulls from github & Make the module 
+`Not implemented` - `lift add raysan5/raylib` - Creates _deps directory in project root and pulls from github & Make the module 
 
 # .lift.conf
 
-User can overwrite default parameters used by `lift init` through creation of `.lift.conf` in one of the ENV paths.
+`Not implemented` - User can overwrite default parameters used by `lift init` through creation of `.lift.conf` in one of the ENV paths.
 
 # How to build & run
 
