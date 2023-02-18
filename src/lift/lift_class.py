@@ -11,9 +11,9 @@ class LiftClass:
     app_name = "app"
     # Root directory of your app (contains "lift_build.py", "build/", "src/")
     dir_root = os.getcwd();
-    # Sources directory (usulaly "/src")
+    # Sources directory (usually "/src")
     dir_source = "/src"
-    # Build directory (usulaly "/build")
+    # Build directory (usually "/build")
     dir_build = "/build"
     # Objects directory within build directory (usually "/object") 
     dir_object = "/object"
