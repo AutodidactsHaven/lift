@@ -4,6 +4,7 @@ import lift.print_color as Out
 from lift.compiler import Compiler
 from lift.files import Files
 from lift.workers import Workers
+from lift.incremental import Incremental
 
 class LiftClass:
     # Name of your app
@@ -139,15 +140,18 @@ class LiftClass:
         # TODO: Scanning files for #includes
         # TODO: Generating dependency graph
         # TODO: Exluding elements in (file_blacklist, dir_blacklist) from files
-
-        ### Incremental compilation
-        Out.print_info("> Resolve incremental compilation")
-        inc = Incremental()
-        source_files_to_compile = inc.resolve(path_src_files, project_settings["build_path"])
-
         Out.print_debug("> Running LiftClass.get_source_files()")
         files = Files(self.dir_root + self.dir_source)
-        source_files = files.get_files_with_extensions({".c", ".h"})
+
+        if self.incremental_compilation:
+            ### Incremental compilation
+            Out.print_info("> Resolving incremental compilation")
+            inc = Incremental()
+            build_dir = self.dir_root + self.dir_build
+            source_files = inc.resolve(files, build_dir)
+        else:
+            source_files = files.get_files_with_extensions({".c", ".h"})
+
         return source_files
 
     def get_object_files(self):

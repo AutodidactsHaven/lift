@@ -7,7 +7,7 @@ into a set of .c files that must be compiled into object files
 import os
 import lift.print_color as Out
 from lift.file_modified_cache import FileModifiedCache
-from lift.dependency_graph import DependencyGraph
+from lift.dependency_graph import DependencyGraph, FileNode
 from lift.files import Files
 
 class Incremental:
