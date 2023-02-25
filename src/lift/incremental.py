@@ -21,11 +21,9 @@ class Incremental:
         header_files = path_src_files.get_files_with_extensions({".h"})
         source_files = path_src_files.get_files_with_extensions({".c"})
         path_src_files = header_files + source_files
-        Out.print_debug(path_src_files)
 
         cache = FileModifiedCache()
         cache.load()
-        Out.print_debug(cache.mtime_cache)
         modified_files = []
         for file in path_src_files:
             mtime = os.path.getmtime(file)
@@ -51,14 +49,13 @@ class Incremental:
             resolve_header_path_for_file = lambda include: resolve_relative_header_path(file.absolute_path, include)
             absolute_path_includes = map(resolve_header_path_for_file, includes)
             for include in absolute_path_includes:
-                print(f'{file} depends on {include}')
                 target_node = dgraph.get_node_by_absolute_path(include)
                 if target_node:
                     dgraph.add_dependency(file, target_node, directional=True)
                 else:
-                    print("couldnt find %s", target_node)
+                    # Out.print_debug(f"couldnt find {include}")
+                    pass
 
-        print(dgraph)
 
         incremental_compile_files = set()
 
@@ -74,9 +71,6 @@ class Incremental:
                 else:
                     #TODO (Josh) how to handle error here?
                     pass
-
-        print("Files to compile: ")
-        print(incremental_compile_files)
 
         # get object files that exist
         build_files = Files(build_dir).get_files_with_extensions({".o"})

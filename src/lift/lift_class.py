@@ -137,9 +137,7 @@ class LiftClass:
         worker_manager.work(self.compiler, [command], self.threads)
 
     def get_source_files(self):        
-        # TODO: Scanning files for #includes
-        # TODO: Generating dependency graph
-        # TODO: Exluding elements in (file_blacklist, dir_blacklist) from files
+        # TODO: Excluding elements in (file_blacklist, dir_blacklist) from files
         Out.print_debug("> Running LiftClass.get_source_files()")
         files = Files(self.dir_root + self.dir_source)
 
@@ -155,7 +153,7 @@ class LiftClass:
         return source_files
 
     def get_object_files(self):
-        # TODO: Exluding elements in (file_blacklist, dir_blacklist) from .o files
+        # TODO: Excluding elements in (file_blacklist, dir_blacklist) from .o files
         # if program was compiled eariles without those filters, these .o files still
         # might exist and become part of the executable by accident.
         Out.print_debug("> Running LiftClass.get_object_files()")
