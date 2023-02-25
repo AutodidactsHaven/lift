@@ -48,9 +48,11 @@ class Incremental:
             f = open(file.absolute_path, "r")
             file_contents = f.read()
             includes = extract_includes(file_contents)
-            for include in includes:
-                # print(f'{file} depends on {include}')
-                target_node = dgraph.get_node_by_filename(include)
+            resolve_header_path_for_file = lambda include: resolve_relative_header_path(file.absolute_path, include)
+            absolute_path_includes = map(resolve_header_path_for_file, includes)
+            for include in absolute_path_includes:
+                print(f'{file} depends on {include}')
+                target_node = dgraph.get_node_by_absolute_path(include)
                 if target_node:
                     dgraph.add_dependency(file, target_node, directional=True)
                 else:
@@ -96,6 +98,11 @@ class Incremental:
         source_files_to_compile = uncompiled_source_files | incremental_compile_files
         
         return source_files_to_compile
+
+def resolve_relative_header_path(src_file_abs_path, include):
+    src_dir = os.path.dirname(src_file_abs_path)
+    header_abs_path = os.path.abspath(os.path.join(src_dir, include))
+    return header_abs_path
 
 def extract_includes(text):
     # the regular expression pattern to match "#include"
