@@ -12,8 +12,8 @@ from lift.dependency_graph import DependencyGraph, FileNode
 from lift.files import Files
 
 class Incremental:
-    def __init__(self):
-        pass
+    def __init__(self, VERBOSE=True):
+        self.VERBOSE = VERBOSE
 
     def resolve(self, path_src_files, build_dir):
 
@@ -29,7 +29,8 @@ class Incremental:
             mtime = os.path.getmtime(file)
             if cache.mtime_cache.get(file):
                 if mtime > float(cache.mtime_cache[file]):
-                    Out.print_color(Out.COLOR.BLUE, f'{file} has been modified since last compilation')
+                    if self.VERBOSE:
+                        Out.print_color(Out.COLOR.BLUE, f'{file} has been modified since last compilation')
                     modified_files.append(file)
 
             cache.add_file(file) # update cache
