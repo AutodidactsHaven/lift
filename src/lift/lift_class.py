@@ -4,15 +4,16 @@ import lift.print_color as Out
 from lift.compiler import Compiler
 from lift.files import Files
 from lift.workers import Workers
+from lift.incremental import Incremental
 
 class LiftClass:
     # Name of your app
     app_name = "app"
     # Root directory of your app (contains "lift_build.py", "build/", "src/")
     dir_root = os.getcwd();
-    # Sources directory (usulaly "/src")
+    # Sources directory (usually "/src")
     dir_source = "/src"
-    # Build directory (usulaly "/build")
+    # Build directory (usually "/build")
     dir_build = "/build"
     # Objects directory within build directory (usually "/object") 
     dir_object = "/object"
@@ -136,16 +137,23 @@ class LiftClass:
         worker_manager.work(self.compiler, [command], self.threads)
 
     def get_source_files(self):        
-        # TODO: Scanning files for #includes
-        # TODO: Generating dependency graph
-        # TODO: Exluding elements in (file_blacklist, dir_blacklist) from files
+        # TODO: Excluding elements in (file_blacklist, dir_blacklist) from files
         Out.print_debug("> Running LiftClass.get_source_files()")
         files = Files(self.dir_root + self.dir_source)
-        source_files = files.get_files_with_extensions({".c", ".h"})
+
+        if self.incremental_compilation:
+            ### Incremental compilation
+            Out.print_info("> Resolving incremental compilation")
+            inc = Incremental()
+            build_dir = self.dir_root + self.dir_build
+            source_files = inc.resolve(files, build_dir)
+        else:
+            source_files = files.get_files_with_extensions({".c", ".h"})
+
         return source_files
 
     def get_object_files(self):
-        # TODO: Exluding elements in (file_blacklist, dir_blacklist) from .o files
+        # TODO: Excluding elements in (file_blacklist, dir_blacklist) from .o files
         # if program was compiled eariles without those filters, these .o files still
         # might exist and become part of the executable by accident.
         Out.print_debug("> Running LiftClass.get_object_files()")

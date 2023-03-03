@@ -34,7 +34,6 @@ def setup(lift):
     
     return lift
 
-
 def build(lift, mode):
     Out.print_debug(f". Running lift_build.py->build({mode})")
     lift.build(mode)
